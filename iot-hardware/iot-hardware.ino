@@ -5,12 +5,14 @@
 #include <Wire.h>
 
 // Network constants
-#define TEAM_NAME "01"
+#define TEAM_NAME ""
 #define PUBLISH_PERIOD 1000
 
-const char* ssid = "electronica-n";
-const char* password = "elec2012";
-const char* mqtt_server = "192.168.8.235";
+int id = 01;
+
+const char* ssid = "CLARO_F2F373";
+const char* password = "";
+const char* mqtt_server = "52.1.170.179";
 
 // I/O constants
 #define TEMP_PIN A0
@@ -218,30 +220,8 @@ void loop() {
     
 //    Serial.println(temp);
     String str(temp);
+    str =+ "hola";
     str.toCharArray(msg, 50);
-    mqtt_client.publish(getTopic("temperatura"), msg);     
+    mqtt_client.publish(getTopic("/devices"), msg);     
   }
-  buttonState = digitalRead(buttonPin);
-
-    // compare the buttonState to its previous state
-    if (buttonState != lastButtonState) {
-      // if the state has changed, increment the counter
-      if (buttonState == HIGH) {
-        // if the current state is HIGH then the button went from off to on:
-        buttonPushCounter++;
-        Serial.println("on");
-        Serial.print("number of button pushes: ");
-        Serial.println(buttonPushCounter);
-      } else {
-        // if the current state is LOW then the button went from on to off:
-        Serial.println("off");
-      }
-      // Delay a little bit to avoid bouncing
-      delay(50);
-    }
-    // save the current state as the last state, for next time through the loop
-    lastButtonState = buttonState;
-    String str1(buttonPushCounter);
-    str1.toCharArray(cnt, 50);
-    mqtt_client.publish(getTopic("count"), cnt );
 }
