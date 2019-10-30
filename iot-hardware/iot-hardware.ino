@@ -5,14 +5,14 @@
 #include <Wire.h>
 
 // Network constants
-#define TEAM_NAME ""
-#define PUBLISH_PERIOD 1000
+#define TEAM_NAME "01"
+int PUBLISH_PERIOD = 1000;
 
 int id = 01;
 
 const char* ssid = "CLARO_F2F373";
-const char* password = "";
-const char* mqtt_server = "52.1.170.179";
+const char* password = "f4EF0B4bc2";
+const char* mqtt_server = "192.168.1.22";
 
 // I/O constants
 #define TEMP_PIN A0
@@ -145,7 +145,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.println("LED OFF");
     digitalWrite(LED_PIN, LOW);
   }else{
-    colorConverter(msg_r);
+//    freq = atoi(msg_r);
+  Serial.print("RECIBIDO: ");
+  Serial.println(msg_r);
+  PUBLISH_PERIOD = atoi(msg_r);
   }
 }
 
@@ -179,7 +182,7 @@ void reconnect() {
     // Attempt to connect
     if (mqtt_client.connect(TEAM_NAME)) {
       Serial.println("connected");
-      mqtt_client.subscribe(getTopic("btn"));
+      mqtt_client.subscribe(getTopic("response"));
       mqtt_client.subscribe(getTopic("rgb"));
     }else {
       Serial.print("failed, rc=");
@@ -220,8 +223,13 @@ void loop() {
     
 //    Serial.println(temp);
     String str(temp);
-    str =+ "hola";
-    str.toCharArray(msg, 50);
-    mqtt_client.publish(getTopic("/devices"), msg);     
+//    str.toCharArray(msg, 50);
+
+    String data = "{\"id\":\"id01\",\"type\":\"input\",\"sensor\":\"";
+    data += str;
+    data += "\"}";
+    
+    data.toCharArray(msg, 50);
+    mqtt_client.publish(getTopic("devices"), msg);     
   }
 }
