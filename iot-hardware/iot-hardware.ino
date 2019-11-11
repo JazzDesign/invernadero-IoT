@@ -10,9 +10,12 @@ int PUBLISH_PERIOD = 1000;
 
 int id = 01;
 
-const char* ssid = "CLARO_F2F373";
-const char* password = "f4EF0B4bc2";
-const char* mqtt_server = "192.168.1.22";
+const char* ssid = "Nexxt_36F1B0";
+const char* password = "";
+const char* mqtt_server = "192.168.0.102";
+
+//const char* password = "f4EF0B4bc2";
+//const char* mqtt_server = "192.168.1.22";
 
 // I/O constants
 #define TEMP_PIN A0
@@ -228,8 +231,9 @@ void loop() {
     String data = "{\"id\":\"id01\",\"type\":\"input\",\"sensor\":\"";
     data += str;
     data += "\"}";
-    
+
     data.toCharArray(msg, 50);
     mqtt_client.publish(getTopic("devices"), msg);     
+    delay(5000);
   }
 }
